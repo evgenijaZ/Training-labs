@@ -34,7 +34,7 @@ public class Controller {
         String rightPart = inputRightMessagePart(scanner).trim().toLowerCase();
         model.setRightPart(rightPart);
 
-        String result = getFullMessage();
+        String result = model.getFullMessage();
         view.printMessage(result);
     }
 
@@ -74,14 +74,5 @@ public class Controller {
                 return line;
             }
         }
-    }
-
-    /**
-     * Generates full message
-     *
-     * @return full message
-     */
-    private String getFullMessage() {
-        return model.getLeftPart() + " " + model.getRightPart();
     }
 }

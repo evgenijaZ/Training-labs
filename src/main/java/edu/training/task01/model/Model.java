@@ -11,6 +11,15 @@ public class Model {
      */
     private String rightPart;
 
+    /**
+     * Generates full message
+     *
+     * @return full message
+     */
+    public String getFullMessage() {
+        return leftPart + " " + rightPart;
+    }
+
     /*
      * Getters & setters
      */
