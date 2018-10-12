@@ -1,24 +1,41 @@
 package edu.training.task02.model;
 
 public class Game {
-    public static int LOWER_BOUND = 0;
-    public static int UPPER_BOUND = 100;
-    private static int HIDDEN_NUMBER;
+    private int lowerBound;
+    private int upperBound;
+    private int hiddenNumber;
 
-    public void makeNumber() {
-        HIDDEN_NUMBER = (int) (Math.random() * UPPER_BOUND);
+    public int makeHiddenNumber() {
+        return (int) (Math.random() * (upperBound - lowerBound) - 1) + lowerBound + 1;
     }
 
     public STATE checkValue(int value) {
-        if (LOWER_BOUND <= value && value <= UPPER_BOUND) {
-            if (value == HIDDEN_NUMBER) return STATE.FINISHED;
-            if (value > HIDDEN_NUMBER) UPPER_BOUND = value;
-            if (value < HIDDEN_NUMBER) LOWER_BOUND = value;
+        if (lowerBound < value && value < upperBound) {
+            if (value == hiddenNumber) return STATE.FINISHED;
+            if (value > hiddenNumber) upperBound = value;
+            if (value < hiddenNumber) lowerBound = value;
             return STATE.ACCEPTED;
         } else return STATE.NOT_ACCEPTED;
     }
 
-   public enum STATE {
+    public enum STATE {
         ACCEPTED, NOT_ACCEPTED, FINISHED
+    }
+
+    public void setHiddenNumber() {
+        hiddenNumber = makeHiddenNumber();
+    }
+
+    public void setBounds(int lowerBound, int upperBound) {
+        this.lowerBound = lowerBound;
+        this.upperBound = upperBound;
+    }
+
+      public int getLowerBound() {
+        return lowerBound;
+    }
+
+    public int getUpperBound() {
+        return upperBound;
     }
 }

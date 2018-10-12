@@ -15,10 +15,11 @@ public class Controller {
     public Controller() {
         view = new View();
         game = new Game();
+        game.setBounds(GlobalVariables.PRIMARY_LOWER_BOUND, GlobalVariables.PRIMARY_UPPER_BOUND);
     }
 
     public void run() {
-        game.makeNumber();
+        game.setHiddenNumber();
         Scanner scanner = new Scanner(System.in);
 
         User user = initUser(scanner);
@@ -42,10 +43,10 @@ public class Controller {
         int inputtedValue;
         boolean isFinished = false;
         do {
-            view.printMessage("Input number from " + Game.LOWER_BOUND + " to " + Game.UPPER_BOUND);
+            view.printMessage("Input number not including from " + game.getLowerBound() + " to " + game.getUpperBound());
             if (scanner.hasNextInt()) {
                 inputtedValue = scanner.nextInt();
-                user.addAttempt(inputtedValue, Game.LOWER_BOUND, Game.UPPER_BOUND);
+                user.addAttempt(inputtedValue,  game.getLowerBound() ,  game.getUpperBound() );
                 isFinished = checkValue(inputtedValue);
             } else scanner.next();
 
