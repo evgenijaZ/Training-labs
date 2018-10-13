@@ -1,4 +1,4 @@
-package edu.training.task03.model.fields;
+package edu.training.task03.model.entities.fields;
 
 public class Address {
     private String index;
