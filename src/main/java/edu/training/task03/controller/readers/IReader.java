@@ -1,5 +1,5 @@
 package edu.training.task03.controller.readers;
 
-public interface Reader {
+public interface IReader {
     String read();
 }

@@ -2,7 +2,7 @@ package edu.training.task03.controller.readers;
 
 import java.util.Scanner;
 
-public class CLIReader implements Reader {
+public class CLIReader implements IReader {
 
     private Scanner scanner;
 
