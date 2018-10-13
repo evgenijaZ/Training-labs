@@ -35,6 +35,17 @@ public class Address {
         return flatNumber;
     }
 
+    @Override
+    public String toString() {
+        return "Address{" +
+                "index='" + index + '\'' +
+                ", city='" + city + '\'' +
+                ", street='" + street + '\'' +
+                ", houseNumber='" + houseNumber + '\'' +
+                ", flatNumber='" + flatNumber + '\'' +
+                '}';
+    }
+
     public static class Builder {
         private String index;
         private String city;

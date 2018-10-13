@@ -1,4 +1,4 @@
-package edu.training.task03.model;
+package edu.training.task03.model.entities;
 
 import java.util.ArrayList;
 import java.util.List;

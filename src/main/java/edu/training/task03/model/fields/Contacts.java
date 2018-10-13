@@ -35,6 +35,17 @@ public class Contacts {
         return skype;
     }
 
+    @Override
+    public String toString() {
+        return "Contacts{" +
+                "homePhone='" + homePhone + '\'' +
+                ", mobilePhone='" + mobilePhone + '\'' +
+                ", secondMobilePhone='" + secondMobilePhone + '\'' +
+                ", email='" + email + '\'' +
+                ", skype='" + skype + '\'' +
+                '}';
+    }
+
     public static class Builder {
         private String homePhone;
         private String mobilePhone;

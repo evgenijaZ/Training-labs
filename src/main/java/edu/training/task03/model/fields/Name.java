@@ -29,6 +29,16 @@ public class Name {
         return nickname;
     }
 
+    @Override
+    public String toString() {
+        return "Name{" +
+                "firstName='" + firstName + '\'' +
+                ", secondName='" + secondName + '\'' +
+                ", surname='" + surname + '\'' +
+                ", nickname='" + nickname + '\'' +
+                '}';
+    }
+
     public static class Builder {
         private String firstName;
         private String secondName;

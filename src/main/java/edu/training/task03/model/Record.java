@@ -54,6 +54,19 @@ public class Record {
         return lastModifyDate;
     }
 
+    @Override
+    public String toString() {
+        return "Record{" +
+                "name=" + name +
+                ", comment='" + comment + '\'' +
+                ", group=" + group +
+                ", contacts=" + contacts +
+                ", address=" + address +
+                ", createDate=" + createDate +
+                ", lastModifyDate=" + lastModifyDate +
+                '}';
+    }
+
     public static class Builder {
         private Name name;
         private String comment;
