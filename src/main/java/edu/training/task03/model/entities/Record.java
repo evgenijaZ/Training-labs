@@ -1,9 +1,9 @@
-package edu.training.task03.model;
+package edu.training.task03.model.entities;
 
-import edu.training.task03.model.fields.Address;
-import edu.training.task03.model.fields.Contacts;
-import edu.training.task03.model.fields.Group;
-import edu.training.task03.model.fields.Name;
+import edu.training.task03.model.entities.fields.Address;
+import edu.training.task03.model.entities.fields.Contacts;
+import edu.training.task03.model.entities.fields.Group;
+import edu.training.task03.model.entities.fields.Name;
 
 import java.util.Date;
 
