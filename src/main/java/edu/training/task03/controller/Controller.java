@@ -11,6 +11,7 @@ import edu.training.task03.view.View;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Date;
 import java.util.Properties;
 import java.util.regex.Pattern;
@@ -62,7 +63,7 @@ public class Controller {
 
         Properties properties = new Properties();
 
-        properties.load(new FileInputStream("src/main/resources/regular-expressions.properties"));
+        properties.load(new InputStreamReader(new FileInputStream("src/main/resources/regular-expressions.properties"), "Cp1251"));
         String regEx = properties.getProperty(propertyKey.key+".regexp");
         String message = properties.getProperty(propertyKey.key+".description");
 
