@@ -16,7 +16,9 @@ public enum PropertyKey {
     CITY("city", "city"),
     STREET("street", "street"),
     HOUSE_NUMBER("house number", "house"),
-    FLAT_NUMBER("flat number", "flat");
+    FLAT_NUMBER("flat number", "flat"),
+    CREATION_DATE("creation date", "date"),
+    LAST_MODIFICATION_DATE("last modification date", "date");
 
     public final String name;
     public final String key;
