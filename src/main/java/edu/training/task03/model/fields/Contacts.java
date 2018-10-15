@@ -3,14 +3,14 @@ package edu.training.task03.model.fields;
 public class Contacts {
     private String homePhone;
     private String mobilePhone;
-    private String secondMobilePhone;
+    private String additionalMobilePhone;
     private String email;
     private String skype;
 
     private Contacts(Builder builder) {
         this.homePhone = builder.homePhone;
         this.mobilePhone = builder.mobilePhone;
-        this.secondMobilePhone = builder.secondMobilePhone;
+        this.additionalMobilePhone = builder.secondMobilePhone;
         this.email = builder.email;
         this.skype = builder.skype;
     }
@@ -23,8 +23,8 @@ public class Contacts {
         return mobilePhone;
     }
 
-    public String getSecondMobilePhone() {
-        return secondMobilePhone;
+    public String getAdditionalMobilePhone() {
+        return additionalMobilePhone;
     }
 
     public String getEmail() {
@@ -37,13 +37,11 @@ public class Contacts {
 
     @Override
     public String toString() {
-        return "Contacts{" +
-                "homePhone='" + homePhone + '\'' +
-                ", mobilePhone='" + mobilePhone + '\'' +
-                ", secondMobilePhone='" + secondMobilePhone + '\'' +
-                ", email='" + email + '\'' +
-                ", skype='" + skype + '\'' +
-                '}';
+        return  "\nтел. домашній: " + homePhone +
+                "\nтел. моб.: " + mobilePhone +
+                "\nтел. моб.(опційно): " + additionalMobilePhone +
+                "\ne-mail: " + email +
+                "\nskype: " + skype;
     }
 
     public static class Builder {
@@ -81,7 +79,7 @@ public class Contacts {
             return this;
         }
 
-        public Contacts build(){
+        public Contacts build() {
             return new Contacts(this);
         }
     }

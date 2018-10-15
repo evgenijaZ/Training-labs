@@ -5,29 +5,35 @@ import edu.training.task03.model.fields.Contacts;
 import edu.training.task03.model.fields.Group;
 import edu.training.task03.model.fields.Name;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Record {
     private Name name;
+    private String nickname;
     private String comment;
     private Group group;
     private Contacts contacts;
     private Address address;
-    private Date createDate;
-    private Date lastModifyDate;
+    private LocalDate creationDate;
+    private LocalDate lastModificationDate;
 
     private Record(Builder builder) {
         this.name = builder.name;
+        this.nickname = builder.nickname;
         this.comment = builder.comment;
         this.group = builder.group;
         this.contacts = builder.contacts;
         this.address = builder.address;
-        this.createDate = builder.createDate;
-        this.lastModifyDate = builder.lastModifyDate;
+        this.creationDate = builder.createDate;
+        this.lastModificationDate = builder.lastModifyDate;
     }
 
     public Name getName() {
         return name;
+    }
+
+    public String getNickname() {
+        return nickname;
     }
 
     public String getComment() {
@@ -46,38 +52,43 @@ public class Record {
         return address;
     }
 
-    public Date getCreateDate() {
-        return createDate;
+    public LocalDate getCreationDate() {
+        return creationDate;
     }
 
-    public Date getLastModifyDate() {
-        return lastModifyDate;
+    public LocalDate getLastModificationDate() {
+        return lastModificationDate;
     }
 
     @Override
     public String toString() {
-        return "Record{" +
-                "name=" + name +
-                ", comment='" + comment + '\'' +
-                ", group=" + group +
-                ", contacts=" + contacts +
-                ", address=" + address +
-                ", createDate=" + createDate +
-                ", lastModifyDate=" + lastModifyDate +
-                '}';
+        return   "Ім'я: " + name +
+                "\nНікнейм: " + nickname +
+                "\nКоментар: " + comment  +
+                "\nГрупа: " + group +
+                "\nКонтакти: " + contacts +
+                "\nАдреса: " + address +
+                "\nДата створення: " + creationDate +
+                "\nДата останніх змін: " + lastModificationDate;
     }
 
     public static class Builder {
         private Name name;
+        private String nickname;
         private String comment;
         private Group group;
         private Contacts contacts;
         private Address address;
-        private Date createDate;
-        private Date lastModifyDate;
+        private LocalDate createDate;
+        private LocalDate lastModifyDate;
 
         public Builder setName(Name name) {
             this.name = name;
+            return this;
+        }
+
+        public Builder setNickname(String nickname) {
+            this.nickname = nickname;
             return this;
         }
 
@@ -101,17 +112,17 @@ public class Record {
             return this;
         }
 
-        public Builder setCreateDate(Date createDate) {
+        public Builder setCreateDate(LocalDate createDate) {
             this.createDate = createDate;
             return this;
         }
 
-        public Builder setLastModifyDate(Date lastModifyDate) {
+        public Builder setLastModifyDate(LocalDate lastModifyDate) {
             this.lastModifyDate = lastModifyDate;
             return this;
         }
 
-        public Record build(){
+        public Record build() {
             return new Record(this);
         }
     }
