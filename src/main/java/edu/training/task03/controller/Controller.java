@@ -68,9 +68,9 @@ public class Controller {
 
         var properties = new Properties();
 
-        properties.load(new InputStreamReader(new FileInputStream("src/main/resources/regular-expressions.properties"), "Cp1251"));
-        String regEx = properties.getProperty(propertyKey.key + ".regexp");
-        String message = properties.getProperty(propertyKey.key + ".description");
+        properties.load(new InputStreamReader(new FileInputStream("src/main/resources/regular-expressions.properties"), "UTF-8"));
+        var regEx = properties.getProperty(propertyKey.key + ".regexp");
+        var message = properties.getProperty(propertyKey.key + ".description");
 
         boolean isExcepted;
         String inputted;
