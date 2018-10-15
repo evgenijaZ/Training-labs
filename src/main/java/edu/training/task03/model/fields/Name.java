@@ -4,13 +4,11 @@ public class Name {
     private String firstName;
     private String secondName;
     private String surname;
-    private String nickname;
 
     private Name(Builder builder) {
         this.firstName = builder.firstName;
         this.secondName = builder.secondName;
         this.surname = builder.surname;
-        this.nickname = builder.nickname;
     }
 
     public String getFirstName() {
@@ -25,25 +23,15 @@ public class Name {
         return surname;
     }
 
-    public String getNickname() {
-        return nickname;
-    }
-
     @Override
     public String toString() {
-        return "Name{" +
-                "firstName='" + firstName + '\'' +
-                ", secondName='" + secondName + '\'' +
-                ", surname='" + surname + '\'' +
-                ", nickname='" + nickname + '\'' +
-                '}';
+        return surname + " " + firstName.substring(0, 1) + ".";
     }
 
     public static class Builder {
         private String firstName;
         private String secondName;
         private String surname;
-        private String nickname;
 
         public Builder() {
         }
@@ -60,11 +48,6 @@ public class Name {
 
         public Builder setSurname(String surname) {
             this.surname = surname;
-            return this;
-        }
-
-        public Builder setNickname(String nickname) {
-            this.nickname = nickname;
             return this;
         }
 
