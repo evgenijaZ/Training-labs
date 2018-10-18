@@ -2,21 +2,19 @@ package edu.training.task03.controller;
 
 import edu.training.task03.controller.readers.CLIReader;
 import edu.training.task03.controller.readers.IReader;
-import edu.training.task03.model.Printer;
 import edu.training.task03.model.Record;
 import edu.training.task03.model.RecordBook;
 import edu.training.task03.model.fields.Address;
 import edu.training.task03.model.fields.Contacts;
 import edu.training.task03.model.fields.Group;
 import edu.training.task03.model.fields.Name;
+import edu.training.task03.view.MessagesKey;
 import edu.training.task03.view.View;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Properties;
+import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 
 public class Controller {
@@ -66,21 +64,24 @@ public class Controller {
 
     private String readValue(IReader reader, PropertyKey propertyKey) throws IOException {
 
-        var properties = new Properties();
+        var regExBundle = ResourceBundle.getBundle("regular-expressions", view.getLocale());
+        var messagesBundle = ResourceBundle.getBundle("messages", view.getLocale());
 
-        properties.load(new InputStreamReader(new FileInputStream("src/main/resources/regular-expressions.properties"), "UTF-8"));
-        var regEx = properties.getProperty(propertyKey.key + ".regexp");
-        var message = properties.getProperty(propertyKey.key + ".description");
+        var regEx = regExBundle.getString(propertyKey.key + ".regexp");
+        var description = messagesBundle.getString(propertyKey.key + ".description");
+
+        var inputMessage = messagesBundle.getString(MessagesKey.INPUT_MESSAGE);
+        var wrongInputMessage = messagesBundle.getString(MessagesKey.WRONG_INPUT_MESSAGE);
 
         boolean isExcepted;
         String inputted;
-        view.printMessage(View.INPUT + propertyKey.name.toUpperCase() + ". " + message);
+        view.printMessage(inputMessage + " " + propertyKey.name.toUpperCase() + ". " + description);
 
         while (true) {
             inputted = reader.read();
             isExcepted = check(inputted, regEx);
             if (!isExcepted)
-                view.printMessage(View.WRONG_INPUT + message);
+                view.printMessage(wrongInputMessage + description);
             else break;
         }
 
@@ -88,7 +89,8 @@ public class Controller {
     }
 
     private LocalDate parseDate(String text) {
-        var formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        var dateFormat = ResourceBundle.getBundle("application").getString(MessagesKey.DATE_FORMAT);
+        var formatter = DateTimeFormatter.ofPattern(dateFormat);
         return LocalDate.parse(text, formatter);
 
     }
@@ -97,7 +99,7 @@ public class Controller {
         return Pattern.matches(regularExpression, text);
     }
 
-    public void printRecordBook(){
+    public void printRecordBook() {
         var printer = new Printer();
         printer.printRecords(recordBook, view);
     }
