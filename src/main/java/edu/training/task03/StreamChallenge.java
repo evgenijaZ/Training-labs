@@ -2,6 +2,7 @@ package edu.training.task03;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class StreamChallenge implements Challenge {
@@ -92,33 +93,31 @@ public class StreamChallenge implements Challenge {
     }
 
     @Override
-    public Object[] findIndexesOfTheElement(int[] array, int element) {
-        //TODO
-        return new Object[0];
+    public int[] findIndexesOfTheElement(int[] array, int element) {
+        return IntStream.range(0, array.length).filter(i -> array[i] == element).toArray();
     }
 
     @Override
     public boolean checkForOrderingInAscendingOrder(int[] array) {
-        //TODO
-        return false;
+        return IntStream.range(0, array.length - 1).allMatch(i -> array[i] < array[i + 1]);
     }
 
     @Override
     public boolean checkForOrderingInDescendingOrder(int[] array) {
-        //TODO
-        return false;
+        return IntStream.range(0, array.length - 1).allMatch(i -> array[i] > array[i + 1]);
     }
 
     @Override
     public int[] cyclicShiftByKPositionsToTheRight(int[] array, int k) {
-        //TODO
-        return new int[0];
+        var arrayAsList = IntStream.of(array).boxed().collect(Collectors.toList());
+        Collections.rotate(arrayAsList, k);
+        return arrayAsList.stream().mapToInt(n -> n).toArray();
     }
 
     @Override
     public int[] findElementsWhoseValuesAreUnique(int[] array, int[] otherArray) {
-        //TODO
-        return new int[0];
+        var otherList = Arrays.stream(otherArray).boxed().collect(Collectors.toList());
+        return Arrays.stream(array).filter(otherList::contains).toArray();
     }
 
     @Override

@@ -168,12 +168,16 @@ public class ArrayChallenge implements Challenge {
     }
 
     @Override
-    public Object[] findIndexesOfTheElement(int[] array, int element) {
+    public int[] findIndexesOfTheElement(int[] array, int element) {
         List<Integer> indexes = new LinkedList<>();
         for (int i = 0; i < array.length; i++) {
             if (array[i] == element) indexes.add(i);
         }
-        return indexes.toArray();
+        int[] indexesArray = new int[indexes.size()];
+        for (int i = 0; i < indexes.size(); i++) {
+            indexesArray[i] = indexes.get(i);
+        }
+        return indexesArray;
     }
 
     @Override
@@ -202,14 +206,28 @@ public class ArrayChallenge implements Challenge {
 
     @Override
     public int[] cyclicShiftByKPositionsToTheRight(int[] array, int k) {
-        //TODO
-        return array;
+        var buffer = new int[array.length + k];
+        System.arraycopy(array, 0, buffer, k - 1, array.length);
+        System.arraycopy(buffer, array.length, buffer, 0, k);
+        System.arraycopy(buffer, 0, array, 0, array.length);
+        return buffer;
     }
 
     @Override
     public int[] findElementsWhoseValuesAreUnique(int[] array, int[] otherArray) {
-        //TODO
-        return array;
+        List<Integer> unique = new LinkedList<>();
+        for (int element : array) {
+            boolean contains = false;
+            for (int otherElement : otherArray) {
+                if (element == otherElement) contains = true;
+            }
+            if (!contains) unique.add(element);
+        }
+        int[] uniqueArray = new int[unique.size()];
+        for (int i = 0; i < unique.size(); i++) {
+            uniqueArray[i] = unique.get(i);
+        }
+        return uniqueArray;
     }
 
     @Override

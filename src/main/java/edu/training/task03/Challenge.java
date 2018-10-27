@@ -31,7 +31,7 @@ public interface Challenge {
 
     int findTheLastNegative(int[] array);
 
-    Object[] findIndexesOfTheElement(int[] array, int element);
+    int[] findIndexesOfTheElement(int[] array, int element);
 
     boolean checkForOrderingInAscendingOrder(int[] array);
 
