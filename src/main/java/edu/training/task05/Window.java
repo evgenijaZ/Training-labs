@@ -46,12 +46,14 @@ public class Window {
     public void open() {
         if (state != State.OPEN)
             state = State.OPEN;
+        System.out.println("Window is opened");
     }
 
     @Marked
     public void close() {
         if (state != State.CLOSED)
             state = State.CLOSED;
+        System.out.println("Window is closed");
     }
 
     @Override
