@@ -18,21 +18,21 @@ public class RecordBook {
         return records;
     }
 
+    public void setRecords(List<Record> records) {
+        this.records = records;
+    }
+
     public void save() throws NotUniqueNicknameException {
         checkNickname(record);
         records.add(record);
     }
 
-    public void setRecords(List<Record> records) {
-        this.records = records;
+    public Record getRecord() {
+        return record;
     }
 
     public void setRecord(Record record) {
         this.record = record;
-    }
-
-    public Record getRecord() {
-        return record;
     }
 
     private void checkNickname(Record record) throws NotUniqueNicknameException {

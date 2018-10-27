@@ -5,13 +5,12 @@ import java.util.List;
 
 public class User {
     private String name;
+    private List<Attempt> attempts;
 
     public User(String name) {
         this.name = name;
         attempts = new ArrayList<>();
     }
-
-    private List<Attempt> attempts;
 
     public void addAttempt(int inputtedValue, int lowerBound, int upperBound) {
         attempts.add(new Attempt(inputtedValue, lowerBound, upperBound));

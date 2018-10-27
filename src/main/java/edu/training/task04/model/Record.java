@@ -62,9 +62,9 @@ public class Record {
 
     @Override
     public String toString() {
-        return   "Ім'я: " + name +
+        return "Ім'я: " + name +
                 "\nНікнейм: " + nickname +
-                "\nКоментар: " + comment  +
+                "\nКоментар: " + comment +
                 "\nГрупа: " + group +
                 "\nКонтакти: " + contacts +
                 "\nАдреса: " + address +

@@ -29,7 +29,7 @@ public class Controller {
         printStatistics(user);
     }
 
-    private User initUser(Scanner scanner){
+    private User initUser(Scanner scanner) {
         view.printMessage(View.INPUT_NAME);
         String name = scanner.nextLine();
         return new User(name);
@@ -46,7 +46,7 @@ public class Controller {
             view.printMessage("Input number not including from " + game.getLowerBound() + " to " + game.getUpperBound());
             if (scanner.hasNextInt()) {
                 inputtedValue = scanner.nextInt();
-                user.addAttempt(inputtedValue,  game.getLowerBound() ,  game.getUpperBound() );
+                user.addAttempt(inputtedValue, game.getLowerBound(), game.getUpperBound());
                 isFinished = checkValue(inputtedValue);
             } else scanner.next();
 

@@ -18,10 +18,6 @@ public class Game {
         } else return STATE.NOT_ACCEPTED;
     }
 
-    public enum STATE {
-        ACCEPTED, NOT_ACCEPTED, FINISHED
-    }
-
     public void setHiddenNumber() {
         hiddenNumber = makeHiddenNumber();
     }
@@ -31,11 +27,15 @@ public class Game {
         this.upperBound = upperBound;
     }
 
-      public int getLowerBound() {
+    public int getLowerBound() {
         return lowerBound;
     }
 
     public int getUpperBound() {
         return upperBound;
+    }
+
+    public enum STATE {
+        ACCEPTED, NOT_ACCEPTED, FINISHED
     }
 }

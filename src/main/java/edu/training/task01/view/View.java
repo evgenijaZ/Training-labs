@@ -8,6 +8,7 @@ public class View {
 
     /**
      * Prints message
+     *
      * @param message text to print
      */
     public void printMessage(String message) {

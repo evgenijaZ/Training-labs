@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class LoadDatabase {
     private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(LoadDatabase.class);
+
     @Bean
     CommandLineRunner initDatabase(UserRepository repository) {
         return args -> {

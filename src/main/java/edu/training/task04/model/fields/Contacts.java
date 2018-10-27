@@ -37,7 +37,7 @@ public class Contacts {
 
     @Override
     public String toString() {
-        return  "\nтел. домашній: " + homePhone +
+        return "\nтел. домашній: " + homePhone +
                 "\nтел. моб.: " + mobilePhone +
                 "\nтел. моб.(опційно): " + additionalMobilePhone +
                 "\ne-mail: " + email +

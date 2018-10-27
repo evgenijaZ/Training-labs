@@ -20,7 +20,7 @@ public class GameTest {
         //Given
         int secretNumber = game.makeHiddenNumber();
         //Then
-        assertTrue(game.getLowerBound() < secretNumber && secretNumber <  game.getUpperBound());
+        assertTrue(game.getLowerBound() < secretNumber && secretNumber < game.getUpperBound());
     }
 
     @Test
