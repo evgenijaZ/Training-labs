@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Users</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+
+<h1>User list</h1>
+
+<table>
+    <tr>
+        <th>FIRST NAME</th>
+        <th>SECOND NAME</th>
+    </tr>
+    <tr th:each="user : ${users}">
+        <td th:text="${user.firstName}">-</td>
+        <td th:text="${user.secondName}">-</td>
+    </tr>
+</table>
+<a href="/users/new">Add user</a>
+</body>
+</html>
