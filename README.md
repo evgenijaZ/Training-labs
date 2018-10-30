@@ -11,3 +11,5 @@ Record book with regEx validation, custom exception
 Reflection  
 ## [Task 6](https://github.com/evgenijaZ/Training-labs/tree/master/src/main/java/edu/training/task06)  
 Simple spring boot project  
+## [Task 7](https://github.com/evgenijaZ/Training-labs/tree/master/src/main/java/edu/training/task07)  
+HashMap  
