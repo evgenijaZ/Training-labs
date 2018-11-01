@@ -13,3 +13,5 @@ Reflection
 Simple spring boot project  
 ## [Task 7](https://github.com/evgenijaZ/Training-labs/tree/master/src/main/java/edu/training/task07)  
 HashMap  
+## [Task 8](https://github.com/evgenijaZ/Training-labs/tree/master/src/main/java/edu/training/task08)  
+Simple servlet project  
