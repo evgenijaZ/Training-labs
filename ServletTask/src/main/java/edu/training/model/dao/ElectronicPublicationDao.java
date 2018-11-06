@@ -9,7 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class ElectronicPublicationDao implements IDao<ElectronicPublication, Long> {
 
@@ -22,7 +21,7 @@ public class ElectronicPublicationDao implements IDao<ElectronicPublication, Lon
     @Override
     public List<ElectronicPublication> getAll() {
         String selectAllQuery = "SELECT library.publication.id AS id, library.publication.doi AS doi, library.publication.name AS name, library.publication.author AS author, library.publication.key_words AS key_words, library.electronic_publication.link AS link FROM library.publication INNER JOIN library.electronic_publication ON publication.id = electronic_publication.parent_id;";
-        String selectReferencesQuery = "SELECT library.publication.doi FROM library.references INNER JOIN library.publication ON library.references.reference_id = library.publication.id WHERE library.publication_id = ?;";
+        String selectReferencesQuery = "SELECT library.publication.doi FROM library.references INNER JOIN library.publication ON library.references.reference_id = library.publication.id WHERE library.references.publication_id = ?;";
 
         List<ElectronicPublication> publications = new ArrayList<>();
         PreparedStatement selectAll = session.getPrepareStatement(selectAllQuery);
@@ -32,7 +31,7 @@ public class ElectronicPublicationDao implements IDao<ElectronicPublication, Lon
             PreparedStatement selectReferences = session.getPrepareStatement(selectReferencesQuery);
             for (Publication publication : publications) {
                 List<String> references = new ArrayList<>();
-                selectReferences.setLong(0, publication.getId());
+                selectReferences.setLong(1, publication.getId());
                 ResultSet referencesResultSet = selectReferences.executeQuery();
                 while (referencesResultSet.next()) {
                     references.add(referencesResultSet.getString("doi"));
@@ -76,7 +75,7 @@ public class ElectronicPublicationDao implements IDao<ElectronicPublication, Lon
             selectId = session.getPrepareStatement(selectIdQuery);
             updateReference = session.getPrepareStatement(updateReferenceQuery);
 
-            updatePublication.setString(0, DOI);
+            updatePublication.setString(1, DOI);
             updatePublication.setString(2, name);
             updatePublication.setString(3, author);
             updatePublication.setString(4, keyWords);
@@ -84,14 +83,14 @@ public class ElectronicPublicationDao implements IDao<ElectronicPublication, Lon
             updatePublication.execute();
 
 
-            updateEPublication.setString(0, link);
-            updateEPublication.setLong(1, id);
+            updateEPublication.setString(1, link);
+            updateEPublication.setLong(2, id);
 
             updateEPublication.execute();
             session.commit();
 
             for (String referenceDOI : references) {
-                selectId.setString(0, referenceDOI);
+                selectId.setString(1, referenceDOI);
                 ResultSet idSet = selectId.executeQuery();
                 String referenceId;
                 if (idSet.next()) {
@@ -100,8 +99,8 @@ public class ElectronicPublicationDao implements IDao<ElectronicPublication, Lon
                     throw new SQLException("Creating reference failed, no publication found with DOI " + referenceDOI);
                 }
 
-                updateReference.setString(0, referenceId);
-                updateReference.setLong(1, id);
+                updateReference.setString(1, referenceId);
+                updateReference.setLong(2, id);
 
                 session.commit();
             }
@@ -123,16 +122,21 @@ public class ElectronicPublicationDao implements IDao<ElectronicPublication, Lon
     @Override
     public ElectronicPublication getByKey(Long key) {
         String selectAllQuery = "SELECT library.publication.id AS id, library.publication.doi AS doi, library.publication.name AS name, library.publication.author AS author, library.publication.key_words AS key_words, library.electronic_publication.link AS link FROM library.publication INNER JOIN library.electronic_publication ON publication.id = electronic_publication.parent_id WHERE library.publication.id = ? LIMIT 1;";
-        String selectReferencesQuery = "SELECT library.publication.doi FROM library.references INNER JOIN library.publication ON library.references.reference_id = library.publication.id WHERE library.publication_id = ?;";
-        ElectronicPublication publication = new ElectronicPublication();
+        String selectReferencesQuery = "SELECT library.publication.doi FROM library.references INNER JOIN library.publication ON library.references.reference_id = library.publication.id WHERE library.references.publication_id = ?;";
+        ElectronicPublication publication = null;
         PreparedStatement statement = session.getPrepareStatement(selectAllQuery);
         try {
-            statement.setInt(0, Math.toIntExact(key));
+            publication = new ElectronicPublication();
+            statement.setInt(1, Math.toIntExact(key));
             ResultSet resultSet = statement.executeQuery();
-            publication = Objects.requireNonNull(parseResultSet(resultSet).get(0));
+            List<ElectronicPublication> publications = parseResultSet(resultSet);
+            if (publications.size() >= 1)
+                publication = publications.get(0);
+            else
+                return null;
             List<String> references = new ArrayList<>();
             PreparedStatement selectReferences = session.getPrepareStatement(selectReferencesQuery);
-            selectReferences.setLong(0, publication.getId());
+            selectReferences.setLong(1, publication.getId());
             ResultSet referencesResultSet = selectReferences.executeQuery();
             while (referencesResultSet.next()) {
                 references.add(referencesResultSet.getString("doi"));
@@ -140,7 +144,7 @@ public class ElectronicPublicationDao implements IDao<ElectronicPublication, Lon
             publication.setReferences(references);
             session.closeStatement(statement);
         } catch (SQLException e) {
-            System.err.println("Cannot execute 'select all' query: " + e.getMessage());
+            System.err.println("Cannot execute 'select by key' query: " + e.getMessage());
         }
         return publication;
     }
@@ -157,13 +161,13 @@ public class ElectronicPublicationDao implements IDao<ElectronicPublication, Lon
         try {
             session.setAutoCommit(false);
 
-            deletePublication.setInt(0, Math.toIntExact(key));
+            deletePublication.setInt(1, Math.toIntExact(key));
             deletePublication.execute();
 
-            deleteEPublication.setInt(0, Math.toIntExact(key));
+            deleteEPublication.setInt(1, Math.toIntExact(key));
             deleteEPublication.execute();
 
-            deleteReferences.setInt(0, Math.toIntExact(key));
+            deleteReferences.setInt(1, Math.toIntExact(key));
             deleteEPublication.execute();
 
             session.commit();
@@ -211,10 +215,10 @@ public class ElectronicPublicationDao implements IDao<ElectronicPublication, Lon
             selectId = session.getPrepareStatement(selectIdQuery);
             insertReference = session.getPrepareStatement(insertReferenceQuery);
 
-            insertPublication.setString(0, DOI);
-            insertPublication.setString(1, name);
-            insertPublication.setString(2, author);
-            insertPublication.setString(3, keyWords);
+            insertPublication.setString(1, DOI);
+            insertPublication.setString(2, name);
+            insertPublication.setString(3, author);
+            insertPublication.setString(4, keyWords);
             insertPublication.execute();
 
             ResultSet generatedKeys = insertPublication.getGeneratedKeys();
@@ -224,8 +228,8 @@ public class ElectronicPublicationDao implements IDao<ElectronicPublication, Lon
                 throw new SQLException("Creating publication failed, no ID obtained.");
             }
 
-            insertEPublication.setString(0, parentId);
-            insertEPublication.setString(1, link);
+            insertEPublication.setString(1, parentId);
+            insertEPublication.setString(2, link);
             insertEPublication.execute();
 
             generatedKeys = insertEPublication.getGeneratedKeys();
@@ -237,7 +241,7 @@ public class ElectronicPublicationDao implements IDao<ElectronicPublication, Lon
             session.commit();
 
             for (String referenceDOI : references) {
-                selectId.setString(0, referenceDOI);
+                selectId.setString(1, referenceDOI);
                 ResultSet idSet = selectId.executeQuery();
                 String referenceId;
                 if (idSet.next()) {
@@ -246,8 +250,8 @@ public class ElectronicPublicationDao implements IDao<ElectronicPublication, Lon
                     throw new SQLException("Creating reference failed, no publication found with DOI " + referenceDOI);
                 }
 
-                insertReference.setString(0, id);
-                insertReference.setString(1, referenceId);
+                insertReference.setString(1, id);
+                insertReference.setString(2, referenceId);
                 session.commit();
             }
         } catch (SQLException e) {

@@ -1,5 +1,6 @@
 package edu.training.model.dao;
 
+import edu.training.model.entities.ElectronicPublication;
 import edu.training.model.entities.PaperPublication;
 import edu.training.model.entities.Publication;
 import edu.training.model.entities.PublishingHouse;
@@ -24,7 +25,7 @@ public class PaperPublicationDao implements IDao<PaperPublication, Long> {
     @Override
     public List<PaperPublication> getAll() {
         String selectAllQuery = "SELECT library.publication.id AS id, library.publication.doi AS doi, library.publication.name AS name, library.publication.author AS author, library.publication.key_words AS key_words, library.paper_publication.circulation AS circulation, library.paper_publication.publishing_house_name AS publishing_house_name, library.paper_publication.publishing_house_city AS publishing_house_city FROM library.publication INNER JOIN library.paper_publication ON publication.id = paper_publication.parent_id;";
-        String selectReferencesQuery = "SELECT library.publication.doi FROM library.references INNER JOIN library.publication ON library.references.reference_id = library.publication.id WHERE library.publication_id = ?;";
+        String selectReferencesQuery = "SELECT library.publication.doi FROM library.references INNER JOIN library.publication ON library.references.reference_id = library.publication.id WHERE library.references.publication_id = ?;";
 
         List<PaperPublication> publications = new ArrayList<>();
         PreparedStatement selectAll = session.getPrepareStatement(selectAllQuery);
@@ -34,7 +35,7 @@ public class PaperPublicationDao implements IDao<PaperPublication, Long> {
             PreparedStatement selectReferences = session.getPrepareStatement(selectReferencesQuery);
             for (Publication publication : publications) {
                 List<String> references = new ArrayList<>();
-                selectReferences.setLong(0, publication.getId());
+                selectReferences.setLong(1, publication.getId());
                 ResultSet referencesResultSet = selectReferences.executeQuery();
                 while (referencesResultSet.next()) {
                     references.add(referencesResultSet.getString("doi"));
@@ -80,7 +81,7 @@ public class PaperPublicationDao implements IDao<PaperPublication, Long> {
             selectId = session.getPrepareStatement(selectIdQuery);
             updateReference = session.getPrepareStatement(updateReferenceQuery);
 
-            updatePublication.setString(0, DOI);
+            updatePublication.setString(1, DOI);
             updatePublication.setString(2, name);
             updatePublication.setString(3, author);
             updatePublication.setString(4, keyWords);
@@ -88,16 +89,16 @@ public class PaperPublicationDao implements IDao<PaperPublication, Long> {
             updatePublication.execute();
 
 
-            updatePaperPublication.setInt(0, circulation);
-            updatePaperPublication.setString(1, publishingHouseName);
-            updatePaperPublication.setString(2, publishingHouseCity);
-            updatePaperPublication.setLong(3, id);
+            updatePaperPublication.setInt(1, circulation);
+            updatePaperPublication.setString(2, publishingHouseName);
+            updatePaperPublication.setString(3, publishingHouseCity);
+            updatePaperPublication.setLong(4, id);
 
             updatePaperPublication.execute();
             session.commit();
 
             for (String referenceDOI : references) {
-                selectId.setString(0, referenceDOI);
+                selectId.setString(1, referenceDOI);
                 ResultSet idSet = selectId.executeQuery();
                 String referenceId;
                 if (idSet.next()) {
@@ -106,8 +107,8 @@ public class PaperPublicationDao implements IDao<PaperPublication, Long> {
                     throw new SQLException("Creating reference failed, no publication found with DOI " + referenceDOI);
                 }
 
-                updateReference.setString(0, referenceId);
-                updateReference.setLong(1, id);
+                updateReference.setString(1, referenceId);
+                updateReference.setLong(2, id);
 
                 session.commit();
             }
@@ -130,16 +131,20 @@ public class PaperPublicationDao implements IDao<PaperPublication, Long> {
     public PaperPublication getByKey(Long key) {
         String selectAllQuery =
                 "SELECT library.publication.id AS id, library.publication.doi AS doi, library.publication.name AS name, library.publication.author AS author, library.publication.key_words AS key_words, library.paper_publication.circulation AS circulation, library.paper_publication.publishing_house_name AS publishing_house_name, library.paper_publication.publishing_house_city AS publishing_house_city FROM library.publication INNER JOIN library.paper_publication ON publication.id = paper_publication.parent_id WHERE library.publication.id = ? LIMIT 1;";
-        String selectReferencesQuery = "SELECT library.publication.doi FROM library.references INNER JOIN library.publication ON library.references.reference_id = library.publication.id WHERE library.publication_id = ?;";
+        String selectReferencesQuery = "SELECT library.publication.doi FROM library.references INNER JOIN library.publication ON library.references.reference_id = library.publication.id WHERE library.references.publication_id = ?;";
         PaperPublication publication = new PaperPublication();
         PreparedStatement statement = session.getPrepareStatement(selectAllQuery);
         try {
-            statement.setInt(0, Math.toIntExact(key));
+            statement.setInt(1, Math.toIntExact(key));
             ResultSet resultSet = statement.executeQuery();
-            publication = Objects.requireNonNull(parseResultSet(resultSet).get(0));
+            List<PaperPublication> publications = parseResultSet(resultSet);
+            if (publications.size() >= 1)
+                publication = publications.get(0);
+            else
+                return null;
             List<String> references = new ArrayList<>();
             PreparedStatement selectReferences = session.getPrepareStatement(selectReferencesQuery);
-            selectReferences.setLong(0, publication.getId());
+            selectReferences.setLong(1, publication.getId());
             ResultSet referencesResultSet = selectReferences.executeQuery();
             while (referencesResultSet.next()) {
                 references.add(referencesResultSet.getString("doi"));
@@ -147,7 +152,7 @@ public class PaperPublicationDao implements IDao<PaperPublication, Long> {
             publication.setReferences(references);
             session.closeStatement(statement);
         } catch (SQLException e) {
-            System.err.println("Cannot execute 'select all' query: " + e.getMessage());
+            System.err.println("Cannot execute 'select by key' query: " + e.getMessage());
         }
         return publication;
     }
@@ -164,13 +169,13 @@ public class PaperPublicationDao implements IDao<PaperPublication, Long> {
         try {
             session.setAutoCommit(false);
 
-            deletePublication.setInt(0, Math.toIntExact(key));
+            deletePublication.setInt(1, Math.toIntExact(key));
             deletePublication.execute();
 
-            deletePaperPublication.setInt(0, Math.toIntExact(key));
+            deletePaperPublication.setInt(1, Math.toIntExact(key));
             deletePaperPublication.execute();
 
-            deleteReferences.setInt(0, Math.toIntExact(key));
+            deleteReferences.setInt(1, Math.toIntExact(key));
             deletePaperPublication.execute();
 
             session.commit();
@@ -220,10 +225,10 @@ public class PaperPublicationDao implements IDao<PaperPublication, Long> {
             selectId = session.getPrepareStatement(selectIdQuery);
             insertReference = session.getPrepareStatement(insertReferenceQuery);
 
-            insertPublication.setString(0, DOI);
-            insertPublication.setString(1, name);
-            insertPublication.setString(2, author);
-            insertPublication.setString(3, keyWords);
+            insertPublication.setString(1, DOI);
+            insertPublication.setString(2, name);
+            insertPublication.setString(3, author);
+            insertPublication.setString(4, keyWords);
             insertPublication.execute();
 
             ResultSet generatedKeys = insertPublication.getGeneratedKeys();
@@ -233,10 +238,10 @@ public class PaperPublicationDao implements IDao<PaperPublication, Long> {
                 throw new SQLException("Creating publication failed, no ID obtained.");
             }
 
-            insertPaperPublication.setString(0, parentId);
-            insertPaperPublication.setInt(1, circulation);
-            insertPaperPublication.setString(2, publishingHouseName);
-            insertPaperPublication.setString(3, publishingHouseCity);
+            insertPaperPublication.setString(1, parentId);
+            insertPaperPublication.setInt(2, circulation);
+            insertPaperPublication.setString(3, publishingHouseName);
+            insertPaperPublication.setString(4, publishingHouseCity);
             insertPaperPublication.execute();
 
             generatedKeys = insertPaperPublication.getGeneratedKeys();
@@ -248,7 +253,7 @@ public class PaperPublicationDao implements IDao<PaperPublication, Long> {
             session.commit();
 
             for (String referenceDOI : references) {
-                selectId.setString(0, referenceDOI);
+                selectId.setString(1, referenceDOI);
                 ResultSet idSet = selectId.executeQuery();
                 String referenceId;
                 if (idSet.next()) {
@@ -257,8 +262,8 @@ public class PaperPublicationDao implements IDao<PaperPublication, Long> {
                     throw new SQLException("Creating reference failed, no publication found with DOI " + referenceDOI);
                 }
 
-                insertReference.setString(0, id);
-                insertReference.setString(1, referenceId);
+                insertReference.setString(1, id);
+                insertReference.setString(2, referenceId);
                 session.commit();
             }
         } catch (SQLException e) {
