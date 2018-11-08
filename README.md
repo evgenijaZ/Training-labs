@@ -15,3 +15,5 @@ Simple spring boot project
 HashMap  
 ## [Task 8](https://github.com/evgenijaZ/Training-labs/tree/master/src/main/java/edu/training/task08)  
 Simple servlet project  
+## [Servlet web app](https://github.com/evgenijaZ/Training-labs/tree/servlet_task/ServletTask)  
+Publication hierarhy, filtering, sorting, JDBC, Servlets  
