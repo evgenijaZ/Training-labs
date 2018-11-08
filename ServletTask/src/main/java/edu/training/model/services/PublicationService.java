@@ -1,7 +1,6 @@
-package edu.training.services;
+package edu.training.model.services;
 
 import edu.training.model.dao.ElectronicPublicationDao;
-import edu.training.model.dao.IDao;
 import edu.training.model.dao.PaperPublicationDao;
 import edu.training.model.entities.Publication;
 
@@ -9,11 +8,10 @@ import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 public class PublicationService {
-    private IDao<? extends Publication, Long> elPubDAO;
-    private IDao<? extends Publication, Long> papPubDAO;
+    private ElectronicPublicationDao elPubDAO;
+    private PaperPublicationDao papPubDAO;
 
 
     public PublicationService(DataSource dataSource) {

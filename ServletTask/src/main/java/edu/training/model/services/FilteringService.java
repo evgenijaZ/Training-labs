@@ -1,4 +1,4 @@
-package edu.training.services;
+package edu.training.model.services;
 
 import edu.training.model.entities.Publication;
 
