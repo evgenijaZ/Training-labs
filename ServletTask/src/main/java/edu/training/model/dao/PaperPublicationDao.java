@@ -1,6 +1,5 @@
 package edu.training.model.dao;
 
-import edu.training.model.entities.ElectronicPublication;
 import edu.training.model.entities.PaperPublication;
 import edu.training.model.entities.Publication;
 import edu.training.model.entities.PublishingHouse;
@@ -12,11 +11,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
+import java.util.ResourceBundle;
 
 public class PaperPublicationDao implements IDao<PaperPublication, Long> {
 
     private Session session;
+    private ResourceBundle bundle = ResourceBundle.getBundle("queries");
 
     public PaperPublicationDao(DataSource dataSource) {
         session = new Session(dataSource);
@@ -24,8 +24,8 @@ public class PaperPublicationDao implements IDao<PaperPublication, Long> {
 
     @Override
     public List<PaperPublication> getAll() {
-        String selectAllQuery = "SELECT library.publication.id AS id, library.publication.doi AS doi, library.publication.name AS name, library.publication.author AS author, library.publication.key_words AS key_words, library.paper_publication.circulation AS circulation, library.paper_publication.publishing_house_name AS publishing_house_name, library.paper_publication.publishing_house_city AS publishing_house_city FROM library.publication INNER JOIN library.paper_publication ON publication.id = paper_publication.parent_id;";
-        String selectReferencesQuery = "SELECT library.publication.doi FROM library.references INNER JOIN library.publication ON library.references.reference_id = library.publication.id WHERE library.references.publication_id = ?;";
+        String selectAllQuery = bundle.getString("pap-publication.select-all");
+        String selectReferencesQuery = bundle.getString("references.select-all");
 
         List<PaperPublication> publications = new ArrayList<>();
         PreparedStatement selectAll = session.getPrepareStatement(selectAllQuery);
@@ -53,10 +53,10 @@ public class PaperPublicationDao implements IDao<PaperPublication, Long> {
     @Override
     public boolean update(PaperPublication publication) {
 
-        String updatePublicationQuery = "UPDATE library.publication SET doi = ?, name = ?, author = ?, key_words = ? WHERE id = ?;";
-        String updatePaperPublicationQuery = "UPDATE library.paper_publication SET circulation = ?, publishing_house_name = ?, publishing_house_city = ? WHERE parent_id = ?;";
-        String selectIdQuery = "SELECT id FROM library.publication where publication.doi = ?;";
-        String updateReferenceQuery = "UPDATE library.references SET reference_id = ? WHERE publication_id = ?;";
+        String updatePublicationQuery = bundle.getString("publication.update");
+        String updatePaperPublicationQuery = bundle.getString("pap-publication.update");
+        String selectIdQuery = bundle.getString("publication.select-id");
+        String updateReferenceQuery = bundle.getString("references.update");
 
         String DOI = publication.getDOI();
         String name = publication.getName();
@@ -129,9 +129,9 @@ public class PaperPublicationDao implements IDao<PaperPublication, Long> {
 
     @Override
     public PaperPublication getByKey(Long key) {
-        String selectAllQuery =
-                "SELECT library.publication.id AS id, library.publication.doi AS doi, library.publication.name AS name, library.publication.author AS author, library.publication.key_words AS key_words, library.paper_publication.circulation AS circulation, library.paper_publication.publishing_house_name AS publishing_house_name, library.paper_publication.publishing_house_city AS publishing_house_city FROM library.publication INNER JOIN library.paper_publication ON publication.id = paper_publication.parent_id WHERE library.publication.id = ? LIMIT 1;";
-        String selectReferencesQuery = "SELECT library.publication.doi FROM library.references INNER JOIN library.publication ON library.references.reference_id = library.publication.id WHERE library.references.publication_id = ?;";
+        String selectAllQuery = bundle.getString("pap-publication.select-by-id");
+        String selectReferencesQuery = bundle.getString("references.select-all");
+
         PaperPublication publication = new PaperPublication();
         PreparedStatement statement = session.getPrepareStatement(selectAllQuery);
         try {
@@ -159,9 +159,9 @@ public class PaperPublicationDao implements IDao<PaperPublication, Long> {
 
     @Override
     public boolean deleteByKey(Long key) {
-        String deletePublicationQuery = "DELETE from library.publication where publication.id = ?";
-        String deletePaperPublicationQuery = "DELETE from library.paper_publication where publication.parent_id = ?";
-        String deleteReferencesQuery = "DELETE from library.references where references.publication_id = ?";
+        String deletePublicationQuery = bundle.getString("publication.delete");
+        String deletePaperPublicationQuery = bundle.getString("pap-publication.delete");
+        String deleteReferencesQuery = bundle.getString("references.delete");
 
         PreparedStatement deletePublication = session.getPrepareStatement(deletePublicationQuery);
         PreparedStatement deletePaperPublication = session.getPrepareStatement(deletePaperPublicationQuery);
@@ -195,11 +195,10 @@ public class PaperPublicationDao implements IDao<PaperPublication, Long> {
 
     @Override
     public boolean create(PaperPublication publication) {
-
-        String insertPublicationQuery = "INSERT INTO `library`.`publication` (`doi`, `name`, `author`, `key_words`) VALUES (?, ?, ?, ?);";
-        String query = "INSERT INTO library.paper_publication (parent_id, circulation, publishing_house_name, publishing_house_city) VALUES (?, ?, ?, ?) ;";
-        String selectIdQuery = "SELECT id FROM library.publication where publication.doi = ?;";
-        String insertReferenceQuery = "INSERT INTO library.references (publication_id, reference_id) VALUES (?, ?);";
+        String insertPublicationQuery = bundle.getString("publication.insert");
+        String insertPaperPublicationQuery = bundle.getString("pap-publication.insert");
+        String selectIdQuery = bundle.getString("publication.select-id");
+        String insertReferenceQuery = bundle.getString("references.insert");
 
         String DOI = publication.getDOI();
         String name = publication.getName();
@@ -221,7 +220,7 @@ public class PaperPublicationDao implements IDao<PaperPublication, Long> {
             session.setAutoCommit(false);
 
             insertPublication = session.getPrepareStatement(insertPublicationQuery);
-            insertPaperPublication = session.getPrepareStatement(query);
+            insertPaperPublication = session.getPrepareStatement(insertPaperPublicationQuery);
             selectId = session.getPrepareStatement(selectIdQuery);
             insertReference = session.getPrepareStatement(insertReferenceQuery);
 

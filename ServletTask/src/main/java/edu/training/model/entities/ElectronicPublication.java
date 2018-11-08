@@ -1,8 +1,5 @@
 package edu.training.model.entities;
 
-import java.util.List;
-import java.util.function.Function;
-
 public class ElectronicPublication extends Publication {
     private String link;
 

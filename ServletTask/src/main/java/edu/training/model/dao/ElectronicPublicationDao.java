@@ -9,10 +9,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 public class ElectronicPublicationDao implements IDao<ElectronicPublication, Long> {
 
     private Session session;
+    private ResourceBundle bundle = ResourceBundle.getBundle("queries");
 
     public ElectronicPublicationDao(DataSource dataSource) {
         session = new Session(dataSource);
@@ -20,8 +22,8 @@ public class ElectronicPublicationDao implements IDao<ElectronicPublication, Lon
 
     @Override
     public List<ElectronicPublication> getAll() {
-        String selectAllQuery = "SELECT library.publication.id AS id, library.publication.doi AS doi, library.publication.name AS name, library.publication.author AS author, library.publication.key_words AS key_words, library.electronic_publication.link AS link FROM library.publication INNER JOIN library.electronic_publication ON publication.id = electronic_publication.parent_id;";
-        String selectReferencesQuery = "SELECT library.publication.doi FROM library.references INNER JOIN library.publication ON library.references.reference_id = library.publication.id WHERE library.references.publication_id = ?;";
+        String selectAllQuery = bundle.getString("el-publication.select-all");
+        String selectReferencesQuery = bundle.getString("references.select-all");
 
         List<ElectronicPublication> publications = new ArrayList<>();
         PreparedStatement selectAll = session.getPrepareStatement(selectAllQuery);
@@ -49,10 +51,10 @@ public class ElectronicPublicationDao implements IDao<ElectronicPublication, Lon
     @Override
     public boolean update(ElectronicPublication publication) {
 
-        String updatePublicationQuery = "UPDATE library.publication SET doi = ?, name = ?, author = ?, key_words = ? WHERE id = ?;";
-        String updateEPublicationQuery = "UPDATE library.electronic_publication SET link = ? WHERE parent_id = ?;";
-        String selectIdQuery = "SELECT id FROM library.publication where publication.doi = ?;";
-        String updateReferenceQuery = "UPDATE library.references SET reference_id = ? WHERE publication_id = ?;";
+        String updatePublicationQuery = bundle.getString("publication.update");
+        String updateEPublicationQuery = bundle.getString("el-publication.update");
+        String selectIdQuery = bundle.getString("publication.select-id");
+        String updateReferenceQuery = bundle.getString("references.update");
 
         String DOI = publication.getDOI();
         String name = publication.getName();
@@ -121,8 +123,9 @@ public class ElectronicPublicationDao implements IDao<ElectronicPublication, Lon
 
     @Override
     public ElectronicPublication getByKey(Long key) {
-        String selectAllQuery = "SELECT library.publication.id AS id, library.publication.doi AS doi, library.publication.name AS name, library.publication.author AS author, library.publication.key_words AS key_words, library.electronic_publication.link AS link FROM library.publication INNER JOIN library.electronic_publication ON publication.id = electronic_publication.parent_id WHERE library.publication.id = ? LIMIT 1;";
-        String selectReferencesQuery = "SELECT library.publication.doi FROM library.references INNER JOIN library.publication ON library.references.reference_id = library.publication.id WHERE library.references.publication_id = ?;";
+        String selectAllQuery = bundle.getString("el-publication.select-by-id");
+        String selectReferencesQuery = bundle.getString("references.select-all");
+
         ElectronicPublication publication = null;
         PreparedStatement statement = session.getPrepareStatement(selectAllQuery);
         try {
@@ -151,9 +154,9 @@ public class ElectronicPublicationDao implements IDao<ElectronicPublication, Lon
 
     @Override
     public boolean deleteByKey(Long key) {
-        String deletePublicationQuery = "DELETE from library.publication where publication.id = ?";
-        String deleteEPublicationQuery = "DELETE from library.electronic_publication where publication.parent_id = ?";
-        String deleteReferencesQuery = "DELETE from library.references where references.publication_id = ?";
+        String deletePublicationQuery = bundle.getString("publication.delete");
+        String deleteEPublicationQuery = bundle.getString("el-publication.delete");
+        String deleteReferencesQuery = bundle.getString("references.delete");
 
         PreparedStatement deletePublication = session.getPrepareStatement(deletePublicationQuery);
         PreparedStatement deleteEPublication = session.getPrepareStatement(deleteEPublicationQuery);
@@ -188,10 +191,10 @@ public class ElectronicPublicationDao implements IDao<ElectronicPublication, Lon
     @Override
     public boolean create(ElectronicPublication publication) {
 
-        String insertPublicationQuery = "INSERT INTO `library`.`publication` (`doi`, `name`, `author`, `key_words`) VALUES (?, ?, ?, ?);";
-        String query = "INSERT INTO library.electronic_publication (parent_id, link) VALUES (?, ?);";
-        String selectIdQuery = "SELECT id FROM library.publication where publication.doi = ?;";
-        String insertReferenceQuery = "INSERT INTO library.references (publication_id, reference_id) VALUES (?, ?);";
+        String insertPublicationQuery = bundle.getString("publication.insert");
+        String insertEPublicationQuery = bundle.getString("el-publication.insert");
+        String selectIdQuery = bundle.getString("publication.select-id");
+        String insertReferenceQuery = bundle.getString("references.insert");
 
         String DOI = publication.getDOI();
         String name = publication.getName();
@@ -211,7 +214,7 @@ public class ElectronicPublicationDao implements IDao<ElectronicPublication, Lon
             session.setAutoCommit(false);
 
             insertPublication = session.getPrepareStatement(insertPublicationQuery);
-            insertEPublication = session.getPrepareStatement(query);
+            insertEPublication = session.getPrepareStatement(insertEPublicationQuery);
             selectId = session.getPrepareStatement(selectIdQuery);
             insertReference = session.getPrepareStatement(insertReferenceQuery);
 

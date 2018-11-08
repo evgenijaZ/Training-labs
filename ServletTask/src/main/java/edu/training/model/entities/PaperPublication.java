@@ -1,7 +1,5 @@
 package edu.training.model.entities;
 
-import java.util.List;
-
 public class PaperPublication extends Publication {
     private PublishingHouse publishingHouse;
     private int circulation;

@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class FilteringService {
-   public List<Publication> filter(List<Publication> publications, String reference, String keyWord) {
+    public List<Publication> filter(List<Publication> publications, String reference, String keyWord) {
         return publications.stream()
                 .filter(e -> e.getReferences().contains(reference) && e.getKeyWords().contains(keyWord))
                 .collect(Collectors.toList());
