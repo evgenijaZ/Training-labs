@@ -16,21 +16,21 @@
         <option value="uk" ${language == 'uk' ? 'selected' : ''}>Ukrainian</option>
     </select>
 </form>
-<c:if test="${not empty requestScope.publication}">
-    <b> <fmt:message key="publication.id" />:</b><c:out value="${publication.id}"></c:out><br>
-    <b> <fmt:message key="publication.doi" />:</b><c:out value="${publication.DOI}"></c:out><br>
-    <b> <fmt:message key="publication.name" />: </b><c:out value="${publication.name}"></c:out><br>
-    <b> <fmt:message key="publication.author" />:</b><c:out value="${publication.author}"></c:out><br>
-    <b> <fmt:message key="publication.key_words" />:</b><c:out value="${publication.keyWords}"></c:out><br>
-    <c:url var="getReferences" value="publications">
-        <c:param name="id" value="${publication.id}"/>
-        <c:param name="references" value="true"/>
+<c:if test="${not empty sessionScope.publication}">
+    <b> <fmt:message key="publication.id" />:</b><c:out value="${sessionScope.publication.id}">-</c:out><br>
+    <b> <fmt:message key="publication.doi" />:</b><c:out value="${sessionScope.publication.DOI}">-</c:out><br>
+    <b> <fmt:message key="publication.name" />: </b><c:out value="${sessionScope.publication.name}">-</c:out><br>
+    <b> <fmt:message key="publication.author" />:</b><c:out value="${sessionScope.publication.author}">-</c:out><br>
+    <b> <fmt:message key="publication.key_words" />:</b><c:out value="${sessionScope.publication.keyWords}">-</c:out><br>
+    <c:url var="getReferences" value="">
+        <c:param name="command" value="References"/>
+        <c:param name="id" value="${sessionScope.publication.id}"/>
     </c:url>
     <a href="${getReferences}"><fmt:message key="publication.href.show_references" /></a>
 </c:if>
-<c:if test="${empty requestScope.publication}">
+<c:if test="${empty sessionScope.publication}">
     <h3><fmt:message key="publication.no_found" /></h3>
 </c:if>
-<a href="publications"><fmt:message key="publication.href.go_back" /></a>
+<a href=""><fmt:message key="publication.href.go_back" /></a>
 </body>
 </html>
