@@ -15,5 +15,19 @@ Simple spring boot project
 HashMap  
 ## [Task 8](https://github.com/evgenijaZ/Training-labs/tree/master/src/main/java/edu/training/task08)  
 Simple servlet project  
-## [Servlet web app](https://github.com/evgenijaZ/Training-labs/tree/servlet_task/ServletTask)  
+## [Servlet web app](https://github.com/evgenijaZ/Training-labs/tree/master/ServletTask)  
 Publication hierarhy, filtering, sorting, JDBC, Servlets  
+## [Task 9](https://github.com/evgenijaZ/Training-labs/tree/master/src/main/java/edu/training/task09)  
+Patterns  
+1. [State](https://github.com/evgenijaZ/Training-labs/tree/master/src/main/java/edu/training/task09/behavioral/state)  
+2. 
+3. [Builder](https://github.com/evgenijaZ/Training-labs/tree/master/src/main/java/edu/training/task09/creational/builder)  
+4.  
+5.  
+6.  
+7. [Factory method](https://github.com/evgenijaZ/Training-labs/tree/master/src/main/java/edu/training/task09/behavioral/factory_method)  
+8. [Decorator](https://github.com/evgenijaZ/Training-labs/tree/master/src/main/java/edu/training/task09/structural/decorator)  
+9. [Observer](https://github.com/evgenijaZ/Training-labs/tree/master/src/main/java/edu/training/task09/behavioral/observer)  
+10. [Adapter](https://github.com/evgenijaZ/Training-labs/tree/master/src/main/java/edu/training/task09/structural/adapter)  
+11. [Facade](https://github.com/evgenijaZ/Training-labs/tree/master/src/main/java/edu/training/task09/structural/facade)  
+12.  
