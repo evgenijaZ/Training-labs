@@ -23,7 +23,7 @@ Patterns
 2. 
 3. [Builder](https://github.com/evgenijaZ/Training-labs/tree/master/src/main/java/edu/training/task09/creational/builder)  
 4.  
-5.  
+5. [Composite](https://github.com/evgenijaZ/Training-labs/tree/master/src/main/java/edu/training/task09/structural/composite)   
 6.  
 7. [Factory method](https://github.com/evgenijaZ/Training-labs/tree/master/src/main/java/edu/training/task09/behavioral/factory_method)  
 8. [Decorator](https://github.com/evgenijaZ/Training-labs/tree/master/src/main/java/edu/training/task09/structural/decorator)  
