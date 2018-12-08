@@ -2,7 +2,6 @@ package edu.training.task03;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeAll;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -13,7 +12,7 @@ public class ArrayChallengeTest {
     private int[] array;
     private Challenge challenge;
 
-    @BeforeAll
+    @Before
     public void preInit() {
         challenge = new StreamChallenge();
     }
@@ -66,13 +65,19 @@ public class ArrayChallengeTest {
         //When
         var count = challenge.countNumberOfEqualToGiven(array, k);
         //Then
-        assertThat(count, is(equalTo(2)));
+        assertThat(count, is(equalTo(2L)));
     }
 
     @Test
     public void shouldCountZeros() {
         var countOfZeros = challenge.countZeros(array);
-        assertThat(countOfZeros, is(equalTo(1)));
+        assertThat(countOfZeros, is(equalTo(1L)));
     }
 
+
+    @Test
+    public void shouldCountNumberOfElementsGreaterThanZero() {
+        var countGreaterThanZero = challenge.countNumberOfElementsGreaterThanZero(array);
+        assertThat(countGreaterThanZero, is(equalTo(7L)));
+    }
 }
