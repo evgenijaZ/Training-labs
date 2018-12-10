@@ -31,3 +31,5 @@ Patterns
 10. [Adapter](https://github.com/evgenijaZ/Training-labs/tree/master/src/main/java/edu/training/task09/structural/adapter)  
 11. [Facade](https://github.com/evgenijaZ/Training-labs/tree/master/src/main/java/edu/training/task09/structural/facade)  
 12.  
+## [Task 10](https://github.com/evgenijaZ/Training-labs/tree/master/sql)  
+SQL tasks  
